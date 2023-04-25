@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { router } from "../api/rootRouter";
+import { api } from "../api";
 
 export const useAuth = create((set, get) => ({
   /**
@@ -13,12 +13,15 @@ export const useAuth = create((set, get) => ({
   /**
    * Pobiera na nowo aktualnie zalogowanego użytkownika.
    */
-  refetch: async () => {
-    if (!get().currentUser) return;
+  getInitialUser: async () => {
     try {
-      await router.auth.refresh();
+      const { data } = await api.get("/auth/verify-and-get-user");
+      const { user, access_token } = data;
+      localStorage.setItem("access_token", access_token);
+      set({ currentUser: user, isLoading: false });
     } catch (err) {
       console.warn("Nie udało się odświerzyć aktualnie zalogowanego użytkownika");
+      get().logout();
     }
   },
   /**
@@ -27,7 +30,5 @@ export const useAuth = create((set, get) => ({
   logout: () => {
     set({ currentUser: null, isLoading: false });
     localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("expires_at");
   },
 }));

@@ -1,27 +1,15 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ThemeProvider } from "styled-components";
 import { AwaitForAuth } from "./layouts/AwaitForAuth";
-import { PrimaryLayout } from "./layouts/PrimaryLayout";
+import { RootLayout } from "./layouts/RootLayout";
 import { ProtectedRoute } from "./layouts/ProtectedRoute";
 import { theme } from "./styles/theme";
 
 import Home from "./pages/Home";
 
 /**
- * Query client odpowiadający za działania hooków do zapytań
- */
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
-/**
- * Router całej aplikacji
+ * Router całej aplikacji - czyli wszystkie strony
  */
 const router = createBrowserRouter([
   {
@@ -37,15 +25,13 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <AwaitForAuth>
-            <PrimaryLayout>
-              <RouterProvider router={router} />
-            </PrimaryLayout>
-          </AwaitForAuth>
-        </AuthProvider>
-      </QueryClientProvider>
+      <AuthProvider>
+        <AwaitForAuth>
+          <RootLayout>
+            <RouterProvider router={router} />
+          </RootLayout>
+        </AwaitForAuth>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

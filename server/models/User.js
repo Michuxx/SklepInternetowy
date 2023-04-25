@@ -1,12 +1,11 @@
 const mongoose = require('mongoose')
-const { PROVIDERS, VALID_NAME, VALID_PASSWORD } = require('../constants')
 
 const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            minLenght: VALID_NAME.MIN_LEN,
-            maxLength: VALID_NAME.MAX_LEN,
+            minLenght: 3,
+            maxLength: 16,
             required: true,
         },
         email: {
@@ -18,8 +17,8 @@ const userSchema = new mongoose.Schema(
         avatarUrl: String,
         password: {
             type: String,
-            minLength: VALID_PASSWORD.MIN_LEN,
-            maxLength: VALID_PASSWORD.MAX_LEN,
+            minLength: 3,
+            maxLength: 80,
             select: false,
             required: true,
         },
@@ -29,7 +28,7 @@ const userSchema = new mongoose.Schema(
         },
         provider: {
             type: String,
-            default: PROVIDERS.LOCAL,
+            default: 'local',
         },
         active: {
             type: Boolean,

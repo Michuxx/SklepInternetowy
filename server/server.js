@@ -1,10 +1,9 @@
 const express = require('express')
+const cors = require('cors')
 const loadDotEnv = require('./config/loadDotenv')
 const connectDatabase = require('./config/connectDatabase')
-const path = require('path')
-const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
-const primaryRouter = require('./routes/index')
+const rootRouter = require('./routes/rootRouter')
 
 // ładowanie zminnych środowiskowych i łączenie z bazą danych
 loadDotEnv()
@@ -19,10 +18,9 @@ const app = express()
 app.use(cors(corsOptions))
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
-app.use(express.static(path.join(__dirname, 'public')))
 
 // routes
-app.use('/api', primaryRouter)
+app.use('/api', rootRouter)
 
 // nasłuchiwanie na porcie
 app.listen(PORT, () => {

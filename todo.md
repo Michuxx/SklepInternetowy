@@ -1,0 +1,10 @@
+- [ ] zapytania i rutery
+- [ ] struktura url
+- [ ] modele
+- [ ] zapytania za pomocą api
+- [ ] styled components
+- [ ] pages
+- [ ] react router
+- [ ] theme
+- [ ] env po obu stronach
+- [ ] test
